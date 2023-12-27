@@ -8,6 +8,7 @@ repos:
   - id: trailing-whitespace
   - id: check-toml
   - id: end-of-file-fixer
+    exclude: '\.svg$'
 
 - repo: https://github.com/asottile/add-trailing-comma
   rev: v2.1.0
