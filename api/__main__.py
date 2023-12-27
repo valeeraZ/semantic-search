@@ -32,7 +32,8 @@ class InterceptHandler(logging.Handler):
             depth += 1
 
         logger.opt(depth=depth, exception=record.exc_info).log(
-            level, record.getMessage()
+            level,
+            record.getMessage(),
         )
 
 
@@ -51,7 +52,10 @@ def setup_logging():
     fmt = "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <level>{level: <8}</level> | <red> {correlation_id} </red> | <cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>"
     logger.remove()
     logger.add(
-        sink=sys.stdout, format=fmt, filter=correlation_id_filter, serialize=JSON_LOGS
+        sink=sys.stdout,
+        format=fmt,
+        filter=correlation_id_filter,
+        serialize=JSON_LOGS,
     )
 
 
@@ -65,7 +69,7 @@ def main() -> None:
             log_level=settings.log_level.value.lower(),
             reload=settings.reload,
             workers=settings.workers_count,
-        )
+        ),
     )
     setup_logging()
     logger.info("Starting server...")

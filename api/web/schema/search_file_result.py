@@ -13,7 +13,9 @@ class SearchFileResult(BaseModel):
     similarity: float = None
     file_chunk_id: int = Field(..., alias="id", serialization_alias="file_chunk_id")
     file_chunk_text: str = Field(
-        ..., alias="chunk_text", serialization_alias="file_chunk_text"
+        ...,
+        alias="chunk_text",
+        serialization_alias="file_chunk_text",
     )
 
     @model_validator(mode="before")

@@ -20,7 +20,9 @@ class FileChunkService:
         self.openai = openai
 
     def create_file_chunks_embedding(
-        self, file_id: int, file_text_content: str
+        self,
+        file_id: int,
+        file_text_content: str,
     ) -> None:
         """
         Creates chunks embeddings from a file text content
@@ -34,12 +36,14 @@ class FileChunkService:
             chunks = self.split_text_into_chunks(file_text_content)
         estimated_cost = self.calculate_embedding_cost(file_text_content)
         logger.info(
-            f"Embedding file {file_id}, Estimated cost for embedding: {estimated_cost} USD"
+            f"Embedding file {file_id}, Estimated cost for embedding: {estimated_cost} USD",
         )
         for chunk in chunks:
             embedding = self.create_embedding(chunk)
             file_chunk = FileChunk(
-                file_id=file_id, chunk_text=chunk, embedding_vector=embedding
+                file_id=file_id,
+                chunk_text=chunk,
+                embedding_vector=embedding,
             )
             self.file_chunk_repository.create(file_chunk)
         logger.info(f"Finished embedding file {file_id}")
@@ -51,12 +55,15 @@ class FileChunkService:
         :return: The embedding float list
         """
         response = self.openai.embeddings.create(
-            model="text-embedding-ada-002", input=text.replace("\n", " ")
+            model="text-embedding-ada-002",
+            input=text.replace("\n", " "),
         )
         return response.data[0].embedding
 
     def find_similar_file_chunks(
-        self, question_embedding: list[float], params: Params = Params()
+        self,
+        question_embedding: list[float],
+        params: Params = Params(),
     ) -> Page[Any]:
         """
         Finds similar top k files to a question embedding using file chunks
@@ -65,7 +72,8 @@ class FileChunkService:
         :return: The similar file chunks
         """
         file_chunks = self.file_chunk_repository.find_similar_file_chunks(
-            question_embedding, params
+            question_embedding,
+            params,
         )
 
         return file_chunks

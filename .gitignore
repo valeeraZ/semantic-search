@@ -206,4 +206,3 @@ cython_debug/
 # User-specific stuff
 postgres-data/
 .ruff_cache
-

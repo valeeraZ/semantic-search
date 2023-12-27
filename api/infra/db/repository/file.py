@@ -14,7 +14,9 @@ class FileRepository(BaseRepository[File]):
 
 class FileChunkRepository(BaseRepository[FileChunk]):
     def find_similar_file_chunks(
-        self, question_embedding: list[float], params: Params = Params()
+        self,
+        question_embedding: list[float],
+        params: Params = Params(),
     ) -> Page[Row]:
         """
         Finds similar top k file chunks belonging to different files for a question embedding
@@ -31,8 +33,8 @@ class FileChunkRepository(BaseRepository[FileChunk]):
                 file_chunk_alias.file_id.label("file_id"),
                 func.min(
                     file_chunk_alias.embedding_vector.cosine_distance(
-                        question_embedding
-                    )
+                        question_embedding,
+                    ),
                 ).label("min_distance"),
             )
             .group_by(file_chunk_alias.file_id)

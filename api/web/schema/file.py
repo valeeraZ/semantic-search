@@ -9,7 +9,9 @@ class FileOut(BaseModel):
     size: int
     # convert the content field to resume_content, only keeps the first 200 characters
     resume_content: str = Field(
-        ..., alias="content", serialization_alias="resume_content"
+        ...,
+        alias="content",
+        serialization_alias="resume_content",
     )
     created_at: datetime.datetime
     updated_at: datetime.datetime

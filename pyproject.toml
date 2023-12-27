@@ -24,6 +24,7 @@ python-multipart = "^0.0.6"
 ujson = "^5.9.0"
 asgi-correlation-id = "^4.2.0"
 fastapi-pagination = "^0.12.14"
+pre-commit = "^3.6.0"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -31,6 +32,9 @@ pytest = "^7.4.3"
 httpx = "^0.25.2"
 pytest-cov = "^4.1.0"
 ruff = "^0.1.9"
+
+[tool.ruff]
+include = ["pyproject.toml", "api/**/*.py"]
 
 
 [build-system]

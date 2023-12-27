@@ -21,7 +21,9 @@ def create_file(
     """
     file_db = file_service.create_file(file)
     background_tasks.add_task(
-        file_chunk_service.create_file_chunks_embedding, file_db.id, file_db.content
+        file_chunk_service.create_file_chunks_embedding,
+        file_db.id,
+        file_db.content,
     )
     return file_db
 

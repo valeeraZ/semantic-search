@@ -42,8 +42,8 @@ def _create_tables() -> None:  # pragma: no cover
             text(
                 """
                 CREATE INDEX IF NOT EXISTS idx_vector ON file_chunk USING hnsw (embedding_vector vector_l2_ops);
-                """
-            )
+                """,
+            ),
         )
     engine.dispose()
 

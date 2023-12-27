@@ -13,7 +13,8 @@ def file_chunk_service():
     file_chunk_repo_mock = MagicMock()
     openai_mock = MagicMock()
     return FileChunkService(
-        file_chunk_repository=file_chunk_repo_mock, openai=openai_mock
+        file_chunk_repository=file_chunk_repo_mock,
+        openai=openai_mock,
     )
 
 
@@ -27,20 +28,24 @@ def test_create_file_chunks_embedding_single_chunk(
             model="text-embedding-ada-002",
             object="list",
             usage={"prompt_tokens": 0, "total_tokens": 0},
-        )
+        ),
     )
     file_chunk_service.file_chunk_repository.create = MagicMock()
 
     file_chunk_service.create_file_chunks_embedding(
-        file_id=1, file_text_content="Test content"
+        file_id=1,
+        file_text_content="Test content",
     )
 
     file_chunk_service.num_tokens_from_string.assert_called_once_with("Test content")
     file_chunk_service.openai.embeddings.create.assert_called_once_with(
-        model="text-embedding-ada-002", input="Test content"
+        model="text-embedding-ada-002",
+        input="Test content",
     )
     expected_file_chunk = FileChunk(
-        file_id=1, chunk_text="Test content", embedding_vector=[1, 2, 3]
+        file_id=1,
+        chunk_text="Test content",
+        embedding_vector=[1, 2, 3],
     )
     # Extract the arguments passed to the create method
     actual_args, _ = file_chunk_service.file_chunk_repository.create.call_args
@@ -56,7 +61,7 @@ def test_create_file_chunks_embedding_multiple_chunks(
     # Mocking the behavior for a larger text content that will be split into multiple chunks
     file_chunk_service.num_tokens_from_string = MagicMock(return_value=600)
     file_chunk_service.split_text_into_chunks = MagicMock(
-        return_value=["Chunk 1", "Chunk 2"]
+        return_value=["Chunk 1", "Chunk 2"],
     )
     file_chunk_service.openai.embeddings.create = MagicMock(
         side_effect=[
@@ -72,25 +77,28 @@ def test_create_file_chunks_embedding_multiple_chunks(
                 object="list",
                 usage={"prompt_tokens": 0, "total_tokens": 0},
             ),
-        ]
+        ],
     )
     file_chunk_service.file_chunk_repository.create = MagicMock()
 
     file_chunk_service.create_file_chunks_embedding(
-        file_id=1, file_text_content="Large test content to split"
+        file_id=1,
+        file_text_content="Large test content to split",
     )
 
     file_chunk_service.num_tokens_from_string.assert_called_once_with(
-        "Large test content to split"
+        "Large test content to split",
     )
     file_chunk_service.split_text_into_chunks.assert_called_once_with(
-        "Large test content to split"
+        "Large test content to split",
     )
     file_chunk_service.openai.embeddings.create.assert_any_call(
-        model="text-embedding-ada-002", input="Chunk 1"
+        model="text-embedding-ada-002",
+        input="Chunk 1",
     )
     file_chunk_service.openai.embeddings.create.assert_any_call(
-        model="text-embedding-ada-002", input="Chunk 2"
+        model="text-embedding-ada-002",
+        input="Chunk 2",
     )
     assert file_chunk_service.openai.embeddings.create.call_count == 2
 

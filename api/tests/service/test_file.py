@@ -40,13 +40,15 @@ def test_create_file(file_service: FileService, mock_upload_file, monkeypatch):
     monkeypatch.setattr(os, "mkdir", mock_mkdir)
     monkeypatch.setattr("builtins.open", mock_open_file)
     monkeypatch.setattr(
-        io, "BytesIO", MagicMock(return_value=io.BytesIO(b"Test file content"))
+        io,
+        "BytesIO",
+        MagicMock(return_value=io.BytesIO(b"Test file content")),
     )
     monkeypatch.setattr(shutil, "copyfileobj", mock_shutil_copyfileobj)
     monkeypatch.setattr(os.path, "getsize", mock_getsize)
     monkeypatch.setattr("api.web.service.file.FileParser", mock_file_parser)
     file_service.file_repository.create = MagicMock(
-        return_value=mock_file_model_instance
+        return_value=mock_file_model_instance,
     )
 
     # Call the function under test
