@@ -7,5 +7,32 @@ services:
       POSTGRES_DB: semantic_search
     ports:
     - "5432:5432"
+    healthcheck:
+      test: pg_isready -U postgres
+      interval: 2s
+      timeout: 3s
+      retries: 40
     volumes:
     - ./postgres-data:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: .
+      dockerfile: ./deploy/backend.prod.Dockerfile
+      target: prod
+    restart: always
+    env_file:
+    - .env
+    tty: true # display colors properly
+    environment: # override .env for local docker development
+      HOST: 0.0.0.0
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASS: postgres
+      DB_BASE: semantic_search
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+    - 8000:8000
