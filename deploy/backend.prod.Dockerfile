@@ -20,7 +20,7 @@ COPY pyproject.toml poetry.lock /app/src/
 WORKDIR /app/src
 
 # Copying actuall application
-COPY ./api /app/src/
+COPY . /app/src/
 RUN poetry install --only main
 
 CMD ["/usr/local/bin/python", "-m", "api"]
