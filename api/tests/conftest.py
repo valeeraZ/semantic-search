@@ -11,6 +11,7 @@ from api.web.api import api_router
 
 
 def get_test_app() -> FastAPI:
+    os.environ["OPENAI_API_KEY"] = "fake_key"
     app = FastAPI()
 
     SQLALCHEMY_DATABASE_URL = "sqlite://"
@@ -24,10 +25,6 @@ def get_test_app() -> FastAPI:
 
     app.state.db_engine = engine
     app.state.db_session_factory = TestingSessionLocal
-
-    # environment variable OPENAI_API_KEY is required
-    # to run the tests
-    os.environ["OPENAI_API_KEY"] = "fake_key"
 
     # noqa: F821
     app.include_router(router=api_router, prefix="/api")
