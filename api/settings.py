@@ -44,7 +44,7 @@ class Settings(BaseSettings):
     db_echo: bool = False
 
     # openai api key
-    openai_api_key: str = ""
+    OPENAI_API_KEY: str = ""
 
     @property
     def db_url(self) -> URL:
