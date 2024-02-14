@@ -21,6 +21,9 @@ jobs:
         pip install poetry
         poetry install
 
+    - name: Set environment variable
+      run: echo "OPENAI_API_KEY=fake_key" >> $GITHUB_sENV
+
     - name: Run tests with coverage
       run: |
         poetry run pytest --cov=api
