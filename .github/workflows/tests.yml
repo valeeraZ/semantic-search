@@ -26,8 +26,10 @@ jobs:
 
     - name: Run tests with coverage
       run: |
-        poetry run pytest --cov=api
+        poetry run pytest --cov=api --cov-report=xml
 
-    - name: Report coverage
-      run: |
-        poetry run coverage report -m
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v4.0.1
+      env:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        slug: valeeraZ/semantic-search
